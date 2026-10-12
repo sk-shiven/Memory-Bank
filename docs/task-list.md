@@ -10,8 +10,9 @@
 - [ ] SSH in, apply OS updates, set up a non-root user
 - [ ] Configure firewall (allow only SSH + HTTP/HTTPS)
 - [ ] Set up SSH key-based login, disable password login
-- [ ] Install Postgres on the VM
-- [ ] Create the database and the three core tables: `users`, `questions`, `answers`
+- [ ] Create a MongoDB Atlas account and provision a free M0 cluster
+- [ ] Configure MongoDB Atlas network access (allow IP from VM) and create database user
+- [ ] Define the three core collections: `users`, `questions`, `answers`
 - [ ] Install Node.js and set up the basic project structure for the API server
 
 ## Day 2 — API Server Basics

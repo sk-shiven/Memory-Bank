@@ -73,7 +73,7 @@ Backend is self-hosted rather than a managed BaaS, on a self-managed Oracle Clou
 ### Components
 - **Client:** Flutter (Android). Screens: today's question, answer composer (text/photo/voice), timeline, settings/notification time.
 - **API server:** Node/Express (or similar) running on the VM, behind a reverse proxy (e.g. nginx) handling HTTPS.
-- **Database:** Postgres — relational, self-hosted on the VM. Chosen over NoSQL for the naturally relational users → questions → answers structure.
+- **Database:** MongoDB Atlas (M0 Free Tier) — managed NoSQL database. Chosen for ease of setup and flexible schema, replacing the self-hosted Postgres approach.
 - **Object storage:** S3-compatible bucket storage for photos and voice notes; the database stores only references/URLs, not the media files themselves.
 - **Push notifications:** Firebase Cloud Messaging (FCM) as the delivery channel, triggered server-side on the user's chosen schedule — used purely for delivery, independent of the self-hosted backend.
 - **AI question generation:** a scheduled server-side job using **Claude Haiku 4.5** (model ID `claude-haiku-4-5-20251001`) to generate questions ahead of time (e.g. a week's worth in advance) rather than at notification time, so delivery is never blocked on an API call. The AI API key stays server-side, never embedded in the client. Haiku 4.5 was chosen for its low cost and speed, appropriate for a short, high-volume, low-complexity generation task — current pricing should be reconfirmed at docs.claude.com before budgeting, as rates can change.
@@ -81,11 +81,11 @@ Backend is self-hosted rather than a managed BaaS, on a self-managed Oracle Clou
 
 ## 8. Data Model (draft)
 
-| Table | Key fields |
+| Collection | Key fields (Document Structure) |
 |---|---|
-| users | id, auth provider id, notification time preference, created_at |
-| questions | id, user_id, day_number, question_text, generated_at, theme_tags |
-| answers | id, question_id, text, photo_url, audio_url, created_at |
+| users | _id, auth_provider_id, notification_time_preference, created_at |
+| questions | _id, user_id, day_number, question_text, generated_at, theme_tags |
+| answers | _id, question_id, text, photo_url, audio_url, created_at |
 
 ## 9. Personalization Logic
 
@@ -104,7 +104,7 @@ Other options considered, for later if manual becomes a bottleneck:
 | Deploy script | A single shell script on the VM doing pull + install + restart, still manually triggered. Low-effort upgrade from fully manual. |
 | Process manager + systemd | Not a deploy method itself — ensures the API server restarts automatically on crash or VM reboot. Recommended regardless of deploy method, for reliability. |
 | Git-triggered CI/CD | Push-to-deploy via a CI pipeline (e.g. GitHub Actions over SSH). More setup, but removes manual steps and is a strong portfolio signal. |
-| Containerized deployment | Docker/docker-compose for the API server (and optionally Postgres). Consistent environments, easier to extend later. |
+| Containerized deployment | Docker/docker-compose for the API server. Consistent environments, easier to extend later. |
 
 ## 11. Non-Functional Requirements
 
