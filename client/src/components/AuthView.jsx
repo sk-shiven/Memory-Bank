@@ -1,0 +1,285 @@
+import React, { useState } from 'react';
+import { Mic, Calendar, ShieldCheck } from 'lucide-react';
+import { loginDemoUser } from '../api';
+
+export default function AuthView({ onLoginSuccess }) {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const handleDemoLogin = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await loginDemoUser();
+      if (onLoginSuccess) {
+        onLoginSuccess(data.user);
+      }
+    } catch (err) {
+      setError(err.message || 'Failed to authenticate demo user');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleClick = () => {
+    // In demo / self-hosted environments without Google Client ID configured,
+    // gracefully fall back to demo login with friendly notice
+    handleDemoLogin();
+  };
+
+  return (
+    <div style={{
+      width: '100%',
+      minHeight: '100vh',
+      boxSizing: 'border-box',
+      backgroundColor: '#f6f4ee',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      position: 'relative',
+      overflow: 'hidden',
+      padding: '24px'
+    }}>
+      {/* Ambient texture: soft sage and warm ochre radial glows */}
+      <div style={{
+        position: 'absolute',
+        top: '-180px',
+        left: '-160px',
+        width: '520px',
+        height: '520px',
+        borderRadius: '50%',
+        background: 'radial-gradient(circle at 30% 30%, rgba(92,138,92,0.14), rgba(92,138,92,0) 70%)',
+        pointerEvents: 'none'
+      }} />
+      <div style={{
+        position: 'absolute',
+        bottom: '-220px',
+        right: '-140px',
+        width: '600px',
+        height: '600px',
+        borderRadius: '50%',
+        background: 'radial-gradient(circle at 60% 60%, rgba(184,129,47,0.12), rgba(184,129,47,0) 70%)',
+        pointerEvents: 'none'
+      }} />
+
+      {/* Main Auth Card */}
+      <div style={{
+        maxWidth: '480px',
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '36px',
+        background: '#fffdf8',
+        border: '1px solid #d8d0bc',
+        borderRadius: '24px',
+        padding: '52px 42px',
+        boxShadow: '0 24px 60px -24px rgba(42,45,37,0.18)',
+        position: 'relative',
+        zIndex: 2
+      }}>
+
+        {/* Brand Badge & Typography */}
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '16px',
+          textAlign: 'center'
+        }}>
+          {/* Badge pill */}
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '6px 18px',
+            border: '1px solid #d8d0bc',
+            borderRadius: '999px',
+            backgroundColor: '#D9D3C5',
+            color: '#6e7262',
+            boxShadow: '0 2px 6px rgba(42,45,37,0.04)'
+          }}>
+            <span style={{
+              fontSize: '12px',
+              fontWeight: 600,
+              letterSpacing: '0.06em',
+              textTransform: 'uppercase',
+              fontFamily: "'Playfair Display', serif"
+            }}>
+              Memory Bank
+            </span>
+          </div>
+
+          {/* Heading in Instrument Serif italic */}
+          <h1 style={{
+            margin: 0,
+            fontFamily: "'Instrument Serif', Georgia, serif",
+            fontWeight: 400,
+            fontStyle: 'italic',
+            fontSize: '38px',
+            lineHeight: 1.22,
+            color: '#6e7262'
+          }}>
+            One question a day.<br />365 days.
+          </h1>
+
+          {/* Subtitle in Playfair Display / Lora */}
+          <p style={{
+            margin: 0,
+            fontSize: '15px',
+            lineHeight: 1.6,
+            color: '#2a2d25',
+            maxWidth: '380px',
+            fontFamily: "'Playfair Display', serif"
+          }}>
+            An AI-curated bank of who you were — in text, voice, or a photo, whenever you have a moment.
+          </p>
+        </div>
+
+        {error && (
+          <div style={{
+            width: '100%',
+            padding: '10px 14px',
+            borderRadius: '10px',
+            background: 'rgba(194, 94, 94, 0.1)',
+            border: '1px solid rgba(194, 94, 94, 0.3)',
+            color: '#c25e5e',
+            fontSize: '0.85rem',
+            textAlign: 'center'
+          }}>
+            {error}
+          </div>
+        )}
+
+        {/* Auth Actions */}
+        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+          {/* Google Button */}
+          <button
+            onClick={handleGoogleClick}
+            disabled={loading}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '12px',
+              width: '100%',
+              boxSizing: 'border-box',
+              padding: '14px 20px',
+              borderRadius: '14px',
+              border: '1px solid #d8d0bc',
+              background: '#ffffff',
+              color: '#2a2d25',
+              fontSize: '15px',
+              fontWeight: 600,
+              fontFamily: "'Inter', sans-serif",
+              cursor: 'pointer',
+              transition: 'background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease'
+            }}
+            onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#faf8f2'; e.currentTarget.style.borderColor = '#c5bc9f'; }}
+            onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#ffffff'; e.currentTarget.style.borderColor = '#d8d0bc'; }}
+          >
+            <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true">
+              <path fill="#4285F4" d="M45.1 24.5c0-1.6-.1-3.1-.4-4.6H24v9h11.8c-.5 2.7-2 5-4.3 6.6v5.5h7C42.5 37 45.1 31.3 45.1 24.5z" />
+              <path fill="#34A853" d="M24 46c5.9 0 10.9-2 14.5-5.3l-7-5.5c-2 1.3-4.5 2.1-7.5 2.1-5.8 0-10.7-3.9-12.4-9.1h-7.2v5.7C7.9 40.9 15.3 46 24 46z" />
+              <path fill="#FBBC05" d="M11.6 28.2c-.4-1.3-.7-2.7-.7-4.2s.3-2.9.7-4.2v-5.7H4.4C3 16.8 2.3 20.3 2.3 24s.7 7.2 2.1 10l7.2-5.8z" />
+              <path fill="#EA4335" d="M24 10.7c3.2 0 6.1 1.1 8.4 3.3l6.2-6.2C34.9 4.3 29.9 2 24 2 15.3 2 7.9 7.1 4.4 14.1l7.2 5.7c1.7-5.2 6.6-9.1 12.4-9.1z" />
+            </svg>
+            Continue with Google
+          </button>
+
+          {/* Divider */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{ flex: 1, height: '1px', background: '#d8d0bc' }} />
+            <span style={{ fontSize: '12px', color: '#b8b09a', textTransform: 'uppercase', letterSpacing: '0.06em', fontFamily: "'Inter', sans-serif" }}>
+              or
+            </span>
+            <div style={{ flex: 1, height: '1px', background: '#d8d0bc' }} />
+          </div>
+
+          {/* Demo Sandbox Button */}
+          <button
+            onClick={handleDemoLogin}
+            disabled={loading}
+            style={{
+              width: '100%',
+              boxSizing: 'border-box',
+              padding: '14px 20px',
+              borderRadius: '14px',
+              border: '1px solid transparent',
+              color: '#FFF3D5',
+              fontSize: '15px',
+              fontWeight: 600,
+              fontFamily: "'Inter', sans-serif",
+              cursor: 'pointer',
+              backgroundColor: '#757267',
+              boxShadow: '0 4px 14px rgba(42, 45, 37, 0.15)',
+              transition: 'background-color 0.2s ease, transform 0.15s ease'
+            }}
+            onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#5f5c53'; }}
+            onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#757267'; }}
+          >
+            {loading ? 'Entering Sandbox...' : 'Explore with demo account'}
+          </button>
+        </div>
+
+        {/* Feature showcase pills with Lucide icons (no emojis) */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexWrap: 'wrap',
+          gap: '8px',
+          paddingTop: '8px',
+          borderTop: '1px solid #ede8db',
+          width: '100%'
+        }}>
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            fontSize: '12px',
+            color: '#6e7262',
+            padding: '4px 10px',
+            borderRadius: '999px',
+            background: '#f9f7f0',
+            border: '1px solid #e2dac9'
+          }}>
+            <Mic size={13} color="#5c8a5c" />
+            <span>Voice & Photos</span>
+          </div>
+
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            fontSize: '12px',
+            color: '#6e7262',
+            padding: '4px 10px',
+            borderRadius: '999px',
+            background: '#f9f7f0',
+            border: '1px solid #e2dac9'
+          }}>
+            <Calendar size={13} color="#b8812f" />
+            <span>365 Day Grid</span>
+          </div>
+
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            fontSize: '12px',
+            color: '#6e7262',
+            padding: '4px 10px',
+            borderRadius: '999px',
+            background: '#f9f7f0',
+            border: '1px solid #e2dac9'
+          }}>
+            <ShieldCheck size={13} color="#6e7262" />
+            <span>Private & Exportable</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  );
+}

@@ -10,11 +10,11 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'apple-touch-icon.png'],
       manifest: {
-        name: '365 — One Question a Day',
-        short_name: '365',
-        description: 'One prompt a day for 365 days. Build an AI-curated journal of your year.',
-        theme_color: '#0f172a',
-        background_color: '#090d16',
+        name: '365 — Memory Bank',
+        short_name: 'Memory Bank',
+        description: 'One question a day. 365 days. An AI-curated bank of who you were in text, voice, or a photo.',
+        theme_color: '#f6f4ee',
+        background_color: '#fffdf8',
         display: 'standalone',
         icons: [
           {
