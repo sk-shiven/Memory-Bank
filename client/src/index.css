@@ -3,6 +3,7 @@
   --font-serif-display: 'Instrument Serif', Georgia, serif;
   --font-serif-vintage: 'Playfair Display', Georgia, serif;
   --font-serif-body: 'Lora', Georgia, serif;
+  --font-script: 'Alex Brush', cursive;
   --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 
   /* Canvas & Paper Backgrounds */
@@ -38,6 +39,15 @@
   --accent-terracotta: #c25e5e;   /* Errors, warning & delete triggers */
   --accent-slate: #576574;        /* Deep slate accent */
 
+  /* Warm & Beige Related Pastel Colors for 365 Grid */
+  --pastel-sage: #9bb999;         /* Soft pastel sage for text */
+  --pastel-apricot: #e8be96;      /* Warm pastel peach/apricot for photo */
+  --pastel-taupe: #a8a396;        /* Soft pastel taupe/olive for voice */
+  --pastel-rose: #d9a7a7;         /* Warm pastel dusty rose for combo */
+  --pastel-today: #faecd8;        /* Warm pastel amber/cream for today */
+  --pastel-sand: #ece6d8;         /* Light muted oatmeal/sand for past missed */
+  --pastel-future: rgba(255, 255, 255, 0.45); /* Translucent cream for future */
+
   /* Shadows & Radius */
   --shadow-card: 0 24px 60px -24px rgba(42, 45, 37, 0.18);
   --shadow-subtle: 0 4px 16px -4px rgba(42, 45, 37, 0.08);
@@ -59,7 +69,7 @@
 body {
   background-color: var(--bg-canvas);
   color: var(--text-primary);
-  font-family: var(--font-sans);
+  font-family: var(--font-serif-body); /* Vintage body by default */
   min-height: 100vh;
   overflow-x: hidden;
   background-image: 
@@ -69,24 +79,24 @@ body {
   background-attachment: fixed;
 }
 
-/* Typography utilities */
-.font-calligraphic {
+/* Calligraphic Heavy Headings & Titles */
+h1, h2, h3, h4, .font-calligraphic {
   font-family: var(--font-serif-display);
   font-style: italic;
   font-weight: 400;
+  letter-spacing: -0.01em;
 }
 
-.font-serif-heading {
-  font-family: var(--font-serif-display);
-  font-weight: 400;
+.font-script {
+  font-family: var(--font-script);
+}
+
+.font-vintage-body {
+  font-family: var(--font-serif-body);
 }
 
 .font-vintage {
   font-family: var(--font-serif-vintage);
-}
-
-.font-body-serif {
-  font-family: var(--font-serif-body);
 }
 
 .font-sans {
@@ -197,6 +207,7 @@ body {
   gap: 0.35rem;
   padding: 0.3rem 0.75rem;
   font-size: 0.8rem;
+  font-family: var(--font-sans);
   font-weight: 500;
   border-radius: var(--radius-full);
   border: 1px solid var(--border-card);

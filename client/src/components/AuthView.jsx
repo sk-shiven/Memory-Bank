@@ -1,10 +1,41 @@
 import React, { useState } from 'react';
-import { Mic, Calendar, ShieldCheck } from 'lucide-react';
-import { loginDemoUser } from '../api';
+import { Mic, Calendar, ShieldCheck, Lock, Mail, User, ArrowRight } from 'lucide-react';
+import { loginDemoUser, loginWithPassword, registerWithPassword } from '../api';
 
 export default function AuthView({ onLoginSuccess }) {
+  const [isRegisterMode, setIsRegisterMode] = useState(false);
+  const [usernameOrEmail, setUsernameOrEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const handlePasswordAuth = async (e) => {
+    e.preventDefault();
+    if (!usernameOrEmail.trim() || !password) {
+      setError('Please provide your username/email and password.');
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError(null);
+      let data;
+      if (isRegisterMode) {
+        data = await registerWithPassword(usernameOrEmail.trim(), password, name.trim() || 'Memory Explorer');
+      } else {
+        data = await loginWithPassword(usernameOrEmail.trim(), password);
+      }
+
+      if (onLoginSuccess) {
+        onLoginSuccess(data.user);
+      }
+    } catch (err) {
+      setError(err.message || 'Authentication failed. Please check your credentials.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleDemoLogin = async () => {
     try {
@@ -38,7 +69,7 @@ export default function AuthView({ onLoginSuccess }) {
       justifyContent: 'center',
       position: 'relative',
       overflow: 'hidden',
-      padding: '24px'
+      padding: '32px 20px'
     }}>
       {/* Ambient texture: soft sage and warm ochre radial glows */}
       <div style={{
@@ -69,22 +100,22 @@ export default function AuthView({ onLoginSuccess }) {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        gap: '36px',
+        gap: '28px',
         background: '#fffdf8',
         border: '1px solid #d8d0bc',
         borderRadius: '24px',
-        padding: '52px 42px',
+        padding: '48px 40px',
         boxShadow: '0 24px 60px -24px rgba(42,45,37,0.18)',
         position: 'relative',
         zIndex: 2
       }}>
 
-        {/* Brand Badge & Typography */}
+        {/* Brand Badge & Calligraphic Header */}
         <div style={{
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: '16px',
+          gap: '14px',
           textAlign: 'center'
         }}>
           {/* Badge pill */}
@@ -110,27 +141,27 @@ export default function AuthView({ onLoginSuccess }) {
             </span>
           </div>
 
-          {/* Heading in Instrument Serif italic */}
+          {/* Heading in Calligraphic Instrument Serif italic */}
           <h1 style={{
             margin: 0,
             fontFamily: "'Instrument Serif', Georgia, serif",
             fontWeight: 400,
             fontStyle: 'italic',
-            fontSize: '38px',
-            lineHeight: 1.22,
+            fontSize: '40px',
+            lineHeight: 1.18,
             color: '#6e7262'
           }}>
             One question a day.<br />365 days.
           </h1>
 
-          {/* Subtitle in Playfair Display / Lora */}
+          {/* Subtitle in Vintage Lora */}
           <p style={{
             margin: 0,
             fontSize: '15px',
             lineHeight: 1.6,
             color: '#2a2d25',
             maxWidth: '380px',
-            fontFamily: "'Playfair Display', serif"
+            fontFamily: "'Lora', Georgia, serif"
           }}>
             An AI-curated bank of who you were — in text, voice, or a photo, whenever you have a moment.
           </p>
@@ -145,16 +176,136 @@ export default function AuthView({ onLoginSuccess }) {
             border: '1px solid rgba(194, 94, 94, 0.3)',
             color: '#c25e5e',
             fontSize: '0.85rem',
-            textAlign: 'center'
+            textAlign: 'center',
+            fontFamily: "'Inter', sans-serif"
           }}>
             {error}
           </div>
         )}
 
-        {/* Auth Actions */}
-        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+        {/* Manual Username / Password Form (Outputs JWT) */}
+        <form onSubmit={handlePasswordAuth} style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          {isRegisterMode && (
+            <div>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', fontWeight: 600, color: '#6e7262', marginBottom: '5px', textTransform: 'uppercase', letterSpacing: '0.04em', fontFamily: "'Inter', sans-serif" }}>
+                <User size={13} color="#6e7262" />
+                Your Name
+              </label>
+              <input
+                type="text"
+                placeholder="Jane Doe"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '11px 14px',
+                  borderRadius: '12px',
+                  border: '1px solid #d8d0bc',
+                  background: '#fcfaf5',
+                  color: '#2a2d25',
+                  fontSize: '14px',
+                  fontFamily: "'Inter', sans-serif",
+                  outline: 'none'
+                }}
+              />
+            </div>
+          )}
+
+          <div>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', fontWeight: 600, color: '#6e7262', marginBottom: '5px', textTransform: 'uppercase', letterSpacing: '0.04em', fontFamily: "'Inter', sans-serif" }}>
+              <Mail size={13} color="#6e7262" />
+              Email or Username
+            </label>
+            <input
+              type="text"
+              required
+              placeholder="you@example.com"
+              value={usernameOrEmail}
+              onChange={(e) => setUsernameOrEmail(e.target.value)}
+              style={{
+                width: '100%',
+                padding: '11px 14px',
+                borderRadius: '12px',
+                border: '1px solid #d8d0bc',
+                background: '#fcfaf5',
+                color: '#2a2d25',
+                fontSize: '14px',
+                fontFamily: "'Inter', sans-serif",
+                outline: 'none'
+              }}
+            />
+          </div>
+
+          <div>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', fontWeight: 600, color: '#6e7262', marginBottom: '5px', textTransform: 'uppercase', letterSpacing: '0.04em', fontFamily: "'Inter', sans-serif" }}>
+              <Lock size={13} color="#6e7262" />
+              Password
+            </label>
+            <input
+              type="password"
+              required
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              style={{
+                width: '100%',
+                padding: '11px 14px',
+                borderRadius: '12px',
+                border: '1px solid #d8d0bc',
+                background: '#fcfaf5',
+                color: '#2a2d25',
+                fontSize: '14px',
+                fontFamily: "'Inter', sans-serif",
+                outline: 'none'
+              }}
+            />
+          </div>
+
+          {/* Manual Submit Button */}
+          <button
+            type="submit"
+            disabled={loading}
+            className="btn-vintage btn-vintage-primary"
+            style={{ width: '100%', marginTop: '6px', padding: '12px 20px', borderRadius: '12px' }}
+          >
+            <span>{loading ? 'Authenticating...' : isRegisterMode ? 'Create Account & Sign In' : 'Sign In with Password'}</span>
+            <ArrowRight size={15} />
+          </button>
+
+          {/* Toggle between Login and Register */}
+          <div style={{ textAlign: 'center', marginTop: '4px' }}>
+            <button
+              type="button"
+              onClick={() => { setIsRegisterMode(!isRegisterMode); setError(null); }}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: '#6e7262',
+                fontSize: '12px',
+                fontFamily: "'Inter', sans-serif",
+                cursor: 'pointer',
+                textDecoration: 'underline'
+              }}
+            >
+              {isRegisterMode ? 'Already have an account? Sign in' : "Don't have an account? Sign up with email"}
+            </button>
+          </div>
+        </form>
+
+        {/* Divider */}
+        <div style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{ flex: 1, height: '1px', background: '#d8d0bc' }} />
+          <span style={{ fontSize: '11px', color: '#b8b09a', textTransform: 'uppercase', letterSpacing: '0.06em', fontFamily: "'Inter', sans-serif" }}>
+            or continue with
+          </span>
+          <div style={{ flex: 1, height: '1px', background: '#d8d0bc' }} />
+        </div>
+
+        {/* Google & Demo Auth Actions */}
+        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '10px' }}>
           {/* Google Button */}
           <button
+            type="button"
             onClick={handleGoogleClick}
             disabled={loading}
             style={{
@@ -164,21 +315,19 @@ export default function AuthView({ onLoginSuccess }) {
               gap: '12px',
               width: '100%',
               boxSizing: 'border-box',
-              padding: '14px 20px',
-              borderRadius: '14px',
+              padding: '12px 20px',
+              borderRadius: '12px',
               border: '1px solid #d8d0bc',
               background: '#ffffff',
               color: '#2a2d25',
-              fontSize: '15px',
+              fontSize: '14px',
               fontWeight: 600,
               fontFamily: "'Inter', sans-serif",
               cursor: 'pointer',
-              transition: 'background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease'
+              transition: 'all 0.15s ease'
             }}
-            onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#faf8f2'; e.currentTarget.style.borderColor = '#c5bc9f'; }}
-            onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#ffffff'; e.currentTarget.style.borderColor = '#d8d0bc'; }}
           >
-            <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true">
+            <svg width="17" height="17" viewBox="0 0 48 48" aria-hidden="true">
               <path fill="#4285F4" d="M45.1 24.5c0-1.6-.1-3.1-.4-4.6H24v9h11.8c-.5 2.7-2 5-4.3 6.6v5.5h7C42.5 37 45.1 31.3 45.1 24.5z" />
               <path fill="#34A853" d="M24 46c5.9 0 10.9-2 14.5-5.3l-7-5.5c-2 1.3-4.5 2.1-7.5 2.1-5.8 0-10.7-3.9-12.4-9.1h-7.2v5.7C7.9 40.9 15.3 46 24 46z" />
               <path fill="#FBBC05" d="M11.6 28.2c-.4-1.3-.7-2.7-.7-4.2s.3-2.9.7-4.2v-5.7H4.4C3 16.8 2.3 20.3 2.3 24s.7 7.2 2.1 10l7.2-5.8z" />
@@ -187,49 +336,26 @@ export default function AuthView({ onLoginSuccess }) {
             Continue with Google
           </button>
 
-          {/* Divider */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div style={{ flex: 1, height: '1px', background: '#d8d0bc' }} />
-            <span style={{ fontSize: '12px', color: '#b8b09a', textTransform: 'uppercase', letterSpacing: '0.06em', fontFamily: "'Inter', sans-serif" }}>
-              or
-            </span>
-            <div style={{ flex: 1, height: '1px', background: '#d8d0bc' }} />
-          </div>
-
           {/* Demo Sandbox Button */}
           <button
+            type="button"
             onClick={handleDemoLogin}
             disabled={loading}
-            style={{
-              width: '100%',
-              boxSizing: 'border-box',
-              padding: '14px 20px',
-              borderRadius: '14px',
-              border: '1px solid transparent',
-              color: '#FFF3D5',
-              fontSize: '15px',
-              fontWeight: 600,
-              fontFamily: "'Inter', sans-serif",
-              cursor: 'pointer',
-              backgroundColor: '#757267',
-              boxShadow: '0 4px 14px rgba(42, 45, 37, 0.15)',
-              transition: 'background-color 0.2s ease, transform 0.15s ease'
-            }}
-            onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#5f5c53'; }}
-            onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#757267'; }}
+            className="btn-vintage btn-vintage-secondary"
+            style={{ width: '100%', padding: '12px 20px', borderRadius: '12px', fontSize: '14px' }}
           >
-            {loading ? 'Entering Sandbox...' : 'Explore with demo account'}
+            Explore with demo account
           </button>
         </div>
 
-        {/* Feature showcase pills with Lucide icons (no emojis) */}
+        {/* Feature showcase pills with Lucide icons (NO EMOJIS) */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           flexWrap: 'wrap',
           gap: '8px',
-          paddingTop: '8px',
+          paddingTop: '12px',
           borderTop: '1px solid #ede8db',
           width: '100%'
         }}>
@@ -245,7 +371,7 @@ export default function AuthView({ onLoginSuccess }) {
             border: '1px solid #e2dac9'
           }}>
             <Mic size={13} color="#5c8a5c" />
-            <span>Voice & Photos</span>
+            <span>Voice &amp; Photos</span>
           </div>
 
           <div style={{
@@ -275,7 +401,7 @@ export default function AuthView({ onLoginSuccess }) {
             border: '1px solid #e2dac9'
           }}>
             <ShieldCheck size={13} color="#6e7262" />
-            <span>Private & Exportable</span>
+            <span>Private &amp; Exportable</span>
           </div>
         </div>
 

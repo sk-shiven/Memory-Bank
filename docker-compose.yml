@@ -1,0 +1,61 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: memory_bank_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-memory_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-memory_pass_change_me}
+      POSTGRES_DB: ${POSTGRES_DB:-memory_bank}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-memory_user} -d ${POSTGRES_DB:-memory_bank}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - memory_net
+
+  api:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: memory_bank_api
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - ./server/.env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-memory_user}:${POSTGRES_PASSWORD:-memory_pass_change_me}@db:5432/${POSTGRES_DB:-memory_bank}
+      ENVIRONMENT: production
+      DEBUG: "False"
+    volumes:
+      - uploads_data:/app/uploads
+    networks:
+      - memory_net
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: memory_bank_client
+    restart: unless-stopped
+    depends_on:
+      - api
+    ports:
+      - "${PORT:-80}:80"
+    networks:
+      - memory_net
+
+volumes:
+  postgres_data:
+    driver: local
+  uploads_data:
+    driver: local
+
+networks:
+  memory_net:
+    driver: bridge

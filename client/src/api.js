@@ -21,6 +21,40 @@ export function logout() {
 // Auth Endpoints
 // -------------------------------------------------------------
 
+export async function loginWithPassword(username_or_email, password) {
+  const res = await fetch(`${API_BASE}/auth/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username_or_email, password }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || 'Invalid username/email or password');
+  }
+  const data = await res.json();
+  if (data.access_token) {
+    localStorage.setItem('token', data.access_token);
+  }
+  return data;
+}
+
+export async function registerWithPassword(email, password, name = 'Memory Explorer') {
+  const res = await fetch(`${API_BASE}/auth/register`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password, name }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || 'Registration failed');
+  }
+  const data = await res.json();
+  if (data.access_token) {
+    localStorage.setItem('token', data.access_token);
+  }
+  return data;
+}
+
 export async function loginDemoUser(email = 'shiven@example.com', name = 'Shiven Kathuria') {
   const res = await fetch(`${API_BASE}/auth/demo`, {
     method: 'POST',

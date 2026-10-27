@@ -11,6 +11,7 @@ class User(Base):
     google_id = Column(String(255), unique=True, index=True, nullable=True)
     email = Column(String(255), unique=True, index=True, nullable=False)
     name = Column(String(255), nullable=True)
+    password_hash = Column(String(255), nullable=True)
     avatar_url = Column(String(1024), nullable=True)
     timezone = Column(String(50), default="UTC", server_default="UTC", nullable=False)
     notification_time_preference = Column(String(10), default="20:00", server_default="20:00", nullable=False)

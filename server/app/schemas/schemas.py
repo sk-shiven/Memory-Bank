@@ -30,6 +30,17 @@ def _validate_interests_list(v: Optional[List[str]]) -> Optional[List[str]]:
 
 
 # --- Auth & User ---
+class UserLoginRequest(BaseModel):
+    username_or_email: str
+    password: str
+
+
+class UserRegisterRequest(BaseModel):
+    email: EmailStr
+    password: str
+    name: Optional[str] = "Memory Explorer"
+
+
 class GoogleAuthRequest(BaseModel):
     credential: str  # Google ID token
 

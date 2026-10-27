@@ -15,7 +15,7 @@ router = APIRouter(prefix="/timeline", tags=["Timeline"])
 @router.get("", response_model=TimelineResponse)
 def get_timeline(
     page: int = Query(1, ge=1, description="Page number starting at 1"),
-    limit: int = Query(20, ge=1, le=100, description="Items per page (max 100)"),
+    limit: int = Query(20, ge=1, le=365, description="Items per page (max 365)"),
     format: Optional[str] = Query(None, pattern="^(all|text|photo|audio)$", description="Filter by format"),
     theme: Optional[str] = Query(None, description="Filter by theme tag"),
     search: Optional[str] = Query(None, description="Search reflections and prompts"),

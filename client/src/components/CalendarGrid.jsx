@@ -166,26 +166,26 @@ export default function CalendarGrid({ onOpenMemory, onGoToToday }) {
             </p>
           </div>
 
-          {/* Quick Legend */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', fontSize: '12px', color: '#6e7262' }}>
+          {/* Warm & Beige Related Pastel Color Legend */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap', fontSize: '12px', color: '#6e7262' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-              <div style={{ width: '11px', height: '11px', borderRadius: '3px', background: '#5c8a5c' }} />
-              <span>Text</span>
+              <div style={{ width: '12px', height: '12px', borderRadius: '3px', background: '#9bb999', border: '1px solid #8ba889' }} />
+              <span>Pastel Sage (Text)</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-              <div style={{ width: '11px', height: '11px', borderRadius: '3px', background: '#b8812f' }} />
-              <span>Photo</span>
+              <div style={{ width: '12px', height: '12px', borderRadius: '3px', background: '#e8be96', border: '1px solid #d4a97f' }} />
+              <span>Pastel Apricot (Photo)</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-              <div style={{ width: '11px', height: '11px', borderRadius: '3px', background: '#6e7262' }} />
-              <span>Voice</span>
+              <div style={{ width: '12px', height: '12px', borderRadius: '3px', background: '#a8a396', border: '1px solid #948f82' }} />
+              <span>Pastel Taupe (Voice)</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-              <div style={{ width: '11px', height: '11px', borderRadius: '3px', background: '#c25e5e' }} />
-              <span>Combo</span>
+              <div style={{ width: '12px', height: '12px', borderRadius: '3px', background: '#d9a7a7', border: '1px solid #c79393' }} />
+              <span>Pastel Rose (Combo)</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-              <div style={{ width: '11px', height: '11px', borderRadius: '3px', border: '1px solid #b8812f', background: '#fff' }} />
+              <div style={{ width: '12px', height: '12px', borderRadius: '3px', border: '1px solid #b8812f', background: '#faecd8' }} />
               <span>Today</span>
             </div>
           </div>
@@ -209,27 +209,40 @@ export default function CalendarGrid({ onOpenMemory, onGoToToday }) {
             {allDays.map(day => {
               let bg = '#ffffff';
               let borderColor = '#e0d8c6';
+              let textColor = '#8a877c';
               let cursor = 'default';
 
               if (day.hasAnswer) {
                 cursor = 'pointer';
-                if (day.format === 'combo') bg = '#c25e5e';
-                else if (day.format === 'photo') bg = '#b8812f';
-                else if (day.format === 'audio') bg = '#6e7262';
-                else bg = '#5c8a5c';
-                borderColor = 'transparent';
+                textColor = '#2a2d25';
+                if (day.format === 'combo') {
+                  bg = '#d9a7a7';
+                  borderColor = '#c79393';
+                } else if (day.format === 'photo') {
+                  bg = '#e8be96';
+                  borderColor = '#d4a97f';
+                } else if (day.format === 'audio') {
+                  bg = '#a8a396';
+                  borderColor = '#948f82';
+                } else {
+                  bg = '#9bb999';
+                  borderColor = '#8ba889';
+                }
               } else if (day.isToday) {
                 cursor = 'pointer';
-                bg = '#ffffff';
+                bg = '#faecd8';
                 borderColor = '#b8812f';
+                textColor = '#b8812f';
               } else if (day.isPast) {
                 // Missed day
-                bg = '#f2ece0';
-                borderColor = '#dcd4bf';
+                bg = '#ece6d8';
+                borderColor = '#ded6c4';
+                textColor = '#a8a396';
               } else {
                 // Future day
-                bg = 'rgba(255, 255, 255, 0.4)';
-                borderColor = '#ede6d8';
+                bg = 'rgba(255, 255, 255, 0.45)';
+                borderColor = '#efeae0';
+                textColor = '#c7c2b5';
               }
 
               return (
@@ -250,20 +263,22 @@ export default function CalendarGrid({ onOpenMemory, onGoToToday }) {
                     fontSize: '10px',
                     fontFamily: "'Inter', monospace",
                     fontWeight: 600,
-                    color: day.hasAnswer ? '#ffffff' : '#8a877c',
+                    color: textColor,
                     cursor,
                     padding: 0,
                     transition: 'transform 0.15s ease, box-shadow 0.15s ease'
                   }}
                   onMouseOver={(e) => {
                     if (day.hasAnswer || day.isToday) {
-                      e.currentTarget.style.transform = 'scale(1.15)';
+                      e.currentTarget.style.transform = 'scale(1.18)';
                       e.currentTarget.style.zIndex = '10';
+                      e.currentTarget.style.boxShadow = '0 3px 8px rgba(42, 45, 37, 0.12)';
                     }
                   }}
                   onMouseOut={(e) => {
                     e.currentTarget.style.transform = 'scale(1)';
                     e.currentTarget.style.zIndex = '1';
+                    e.currentTarget.style.boxShadow = 'none';
                   }}
                   aria-label={`Day ${day.dayNum}`}
                 >
