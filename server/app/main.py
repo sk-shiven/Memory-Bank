@@ -53,6 +53,8 @@ app.mount("/api/media", StaticFiles(directory="uploads"), name="media")
 
 
 @app.get("/")
+@app.get("/api")
+@app.get("/api/")
 def health_check():
     return {
         "status": "healthy",
