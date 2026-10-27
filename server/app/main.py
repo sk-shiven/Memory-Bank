@@ -28,6 +28,9 @@ app = FastAPI(
     title=settings.PROJECT_NAME,
     version="0.1.0",
     description="Backend API for 365 daily journaling with Claude AI question curation",
+    docs_url="/api/docs",
+    openapi_url="/api/openapi.json",
+    redoc_url="/api/redoc",
     lifespan=lifespan
 )
 
