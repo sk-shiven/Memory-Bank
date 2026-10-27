@@ -1,5 +1,8 @@
-from pydantic_settings import BaseSettings
+from pathlib import Path
 from typing import Optional
+from pydantic_settings import BaseSettings
+
+_env_file = Path(__file__).resolve().parent.parent / ".env"
 
 
 class Settings(BaseSettings):
@@ -35,7 +38,7 @@ class Settings(BaseSettings):
     FIREBASE_CREDENTIALS_PATH: Optional[str] = None
 
     class Config:
-        env_file = ".env"
+        env_file = (str(_env_file), ".env")
         case_sensitive = True
         extra = "ignore"
 

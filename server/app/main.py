@@ -6,15 +6,12 @@ from fastapi.staticfiles import StaticFiles
 
 from app.config import settings
 from app.database import init_db
-from app.routers import auth, questions, answers, timeline, users
+from app.routers import auth, questions, answers, timeline, users, media
 from app.services.scheduler import start_scheduler, shutdown_scheduler
 
 # Ensure local uploads directory exists
 uploads_dir = Path("uploads")
 uploads_dir.mkdir(parents=True, exist_ok=True)
-
-# Initialize database schema immediately
-init_db()
 
 
 @asynccontextmanager
@@ -43,15 +40,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Mount local media directory
-app.mount("/api/media", StaticFiles(directory="uploads"), name="media")
-
-# Include Routers
+# Include Routers (must precede StaticFiles mount to allow POST /api/media/presign-upload)
 app.include_router(auth.router, prefix="/api")
 app.include_router(questions.router, prefix="/api")
 app.include_router(answers.router, prefix="/api")
 app.include_router(timeline.router, prefix="/api")
 app.include_router(users.router, prefix="/api")
+app.include_router(media.router, prefix="/api")
+
+# Mount local media directory for GET static uploads
+app.mount("/api/media", StaticFiles(directory="uploads"), name="media")
 
 
 @app.get("/")
