@@ -73,7 +73,7 @@ export async function loginGoogleUser(idToken) {
   const res = await fetch(`${API_BASE}/auth/google`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ token: idToken }),
+    body: JSON.stringify({ credential: idToken, token: idToken }),
   });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));

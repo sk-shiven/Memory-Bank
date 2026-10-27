@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Mic, Calendar, ShieldCheck, Lock, Mail, User, ArrowRight } from 'lucide-react';
-import { loginDemoUser, loginWithPassword, registerWithPassword } from '../api';
+import { loginDemoUser, loginGoogleUser, loginWithPassword, registerWithPassword } from '../api';
+
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || '243590835137-8f6jid61m0t4od43u4aer0uqlhpg9vch.apps.googleusercontent.com';
 
 export default function AuthView({ onLoginSuccess }) {
   const [isRegisterMode, setIsRegisterMode] = useState(false);
@@ -9,6 +11,8 @@ export default function AuthView({ onLoginSuccess }) {
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [googleLoaded, setGoogleLoaded] = useState(false);
+  const googleBtnRef = useRef(null);
 
   const handlePasswordAuth = async (e) => {
     e.preventDefault();
@@ -52,10 +56,77 @@ export default function AuthView({ onLoginSuccess }) {
     }
   };
 
+  const handleGoogleCredentialResponse = async (response) => {
+    if (!response?.credential) {
+      setError('Google Sign-In did not return an identity token.');
+      return;
+    }
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await loginGoogleUser(response.credential);
+      if (onLoginSuccess) {
+        onLoginSuccess(data.user);
+      }
+    } catch (err) {
+      setError(err.message || 'Google authentication failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    let checkInterval = null;
+
+    const setupGoogle = () => {
+      if (typeof window !== 'undefined' && window.google?.accounts?.id && googleBtnRef.current) {
+        try {
+          window.google.accounts.id.initialize({
+            client_id: GOOGLE_CLIENT_ID,
+            callback: handleGoogleCredentialResponse,
+            auto_select: false,
+            cancel_on_tap_outside: true,
+          });
+
+          googleBtnRef.current.innerHTML = '';
+          window.google.accounts.id.renderButton(googleBtnRef.current, {
+            type: 'standard',
+            theme: 'outline',
+            size: 'large',
+            text: 'continue_with',
+            shape: 'rectangular',
+            width: googleBtnRef.current.offsetWidth || 380,
+            logo_alignment: 'left',
+          });
+
+          setGoogleLoaded(true);
+          return true;
+        } catch (err) {
+          console.warn('Google Identity initialization notice:', err);
+        }
+      }
+      return false;
+    };
+
+    if (!setupGoogle()) {
+      checkInterval = setInterval(() => {
+        if (setupGoogle()) {
+          clearInterval(checkInterval);
+        }
+      }, 300);
+    }
+
+    return () => {
+      if (checkInterval) clearInterval(checkInterval);
+    };
+  }, []);
+
   const handleGoogleClick = () => {
-    // In demo / self-hosted environments without Google Client ID configured,
-    // gracefully fall back to demo login with friendly notice
-    handleDemoLogin();
+    if (window.google?.accounts?.id) {
+      window.google.accounts.id.prompt();
+    } else {
+      setError('Google Sign-In is unavailable or blocked by browser privacy settings. You may explore with a demo account.');
+    }
   };
 
   return (
@@ -303,38 +374,54 @@ export default function AuthView({ onLoginSuccess }) {
 
         {/* Google & Demo Auth Actions */}
         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-          {/* Google Button */}
-          <button
-            type="button"
-            onClick={handleGoogleClick}
-            disabled={loading}
+          {/* Google Sign-In Container for GSI Rendered Button */}
+          <div
+            id="googleSignInBtnContainer"
+            ref={googleBtnRef}
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '12px',
               width: '100%',
-              boxSizing: 'border-box',
-              padding: '12px 20px',
-              borderRadius: '12px',
-              border: '1px solid #d8d0bc',
-              background: '#ffffff',
-              color: '#2a2d25',
-              fontSize: '14px',
-              fontWeight: 600,
-              fontFamily: "'Inter', sans-serif",
-              cursor: 'pointer',
-              transition: 'all 0.15s ease'
+              minHeight: '44px',
+              display: googleLoaded ? 'flex' : 'none',
+              justifyContent: 'center',
+              overflow: 'hidden',
+              borderRadius: '12px'
             }}
-          >
-            <svg width="17" height="17" viewBox="0 0 48 48" aria-hidden="true">
-              <path fill="#4285F4" d="M45.1 24.5c0-1.6-.1-3.1-.4-4.6H24v9h11.8c-.5 2.7-2 5-4.3 6.6v5.5h7C42.5 37 45.1 31.3 45.1 24.5z" />
-              <path fill="#34A853" d="M24 46c5.9 0 10.9-2 14.5-5.3l-7-5.5c-2 1.3-4.5 2.1-7.5 2.1-5.8 0-10.7-3.9-12.4-9.1h-7.2v5.7C7.9 40.9 15.3 46 24 46z" />
-              <path fill="#FBBC05" d="M11.6 28.2c-.4-1.3-.7-2.7-.7-4.2s.3-2.9.7-4.2v-5.7H4.4C3 16.8 2.3 20.3 2.3 24s.7 7.2 2.1 10l7.2-5.8z" />
-              <path fill="#EA4335" d="M24 10.7c3.2 0 6.1 1.1 8.4 3.3l6.2-6.2C34.9 4.3 29.9 2 24 2 15.3 2 7.9 7.1 4.4 14.1l7.2 5.7c1.7-5.2 6.6-9.1 12.4-9.1z" />
-            </svg>
-            Continue with Google
-          </button>
+          />
+
+          {/* Fallback button if Google script is still initializing or blocked */}
+          {!googleLoaded && (
+            <button
+              type="button"
+              onClick={handleGoogleClick}
+              disabled={loading}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '12px',
+                width: '100%',
+                boxSizing: 'border-box',
+                padding: '12px 20px',
+                borderRadius: '12px',
+                border: '1px solid #d8d0bc',
+                background: '#ffffff',
+                color: '#2a2d25',
+                fontSize: '14px',
+                fontWeight: 600,
+                fontFamily: "'Inter', sans-serif",
+                cursor: 'pointer',
+                transition: 'all 0.15s ease'
+              }}
+            >
+              <svg width="17" height="17" viewBox="0 0 48 48" aria-hidden="true">
+                <path fill="#4285F4" d="M45.1 24.5c0-1.6-.1-3.1-.4-4.6H24v9h11.8c-.5 2.7-2 5-4.3 6.6v5.5h7C42.5 37 45.1 31.3 45.1 24.5z" />
+                <path fill="#34A853" d="M24 46c5.9 0 10.9-2 14.5-5.3l-7-5.5c-2 1.3-4.5 2.1-7.5 2.1-5.8 0-10.7-3.9-12.4-9.1h-7.2v5.7C7.9 40.9 15.3 46 24 46z" />
+                <path fill="#FBBC05" d="M11.6 28.2c-.4-1.3-.7-2.7-.7-4.2s.3-2.9.7-4.2v-5.7H4.4C3 16.8 2.3 20.3 2.3 24s.7 7.2 2.1 10l7.2-5.8z" />
+                <path fill="#EA4335" d="M24 10.7c3.2 0 6.1 1.1 8.4 3.3l6.2-6.2C34.9 4.3 29.9 2 24 2 15.3 2 7.9 7.1 4.4 14.1l7.2 5.7c1.7-5.2 6.6-9.1 12.4-9.1z" />
+              </svg>
+              Continue with Google
+            </button>
+          )}
 
           {/* Demo Sandbox Button */}
           <button

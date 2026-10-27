@@ -42,7 +42,8 @@ class UserRegisterRequest(BaseModel):
 
 
 class GoogleAuthRequest(BaseModel):
-    credential: str  # Google ID token
+    credential: Optional[str] = None  # Google ID token
+    token: Optional[str] = None       # Alternative alias for ID token
 
 
 class DemoAuthRequest(BaseModel):

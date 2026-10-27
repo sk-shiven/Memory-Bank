@@ -193,11 +193,17 @@ def register_with_password(req: UserRegisterRequest, db: Session = Depends(get_d
 @router.post("/google", response_model=TokenResponse)
 def google_auth(req: GoogleAuthRequest, db: Session = Depends(get_db)):
     """Google OAuth login endpoint."""
+    raw_token = req.credential or req.token
+    if not raw_token:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Missing credential or token in request body."
+        )
     try:
         from google.oauth2 import id_token
         from google.auth.transport import requests
         id_info = id_token.verify_oauth2_token(
-            req.credential,
+            raw_token,
             requests.Request(),
             settings.GOOGLE_CLIENT_ID
         )
