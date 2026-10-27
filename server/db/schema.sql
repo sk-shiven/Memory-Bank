@@ -1,7 +1,7 @@
 -- ==============================================================================
 -- 365 Daily Journaling App — PostgreSQL Schema Definition
 -- Matches SQLAlchemy models: User, Question, Answer, NotificationLog
--- Versioned via Alembic (Revisions: 03504816da5a, 3f6ffaf49888)
+-- Versioned via Alembic (Revisions: 03504816da5a, 3f6ffaf49888, 898f53a25e20)
 -- ==============================================================================
 
 -- Enable PostgreSQL Trigram Extension for fuzzy text/tag searching
@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS users (
     google_id VARCHAR(255) UNIQUE,
     email VARCHAR(255) NOT NULL UNIQUE,
     name VARCHAR(255),
+    password_hash VARCHAR(255),
     avatar_url VARCHAR(1024),
     timezone VARCHAR(50) NOT NULL DEFAULT 'UTC',
     notification_time_preference VARCHAR(10) NOT NULL DEFAULT '20:00',

@@ -315,7 +315,7 @@ For a zero-server-maintenance setup:
 | Tier | Service | Configuration |
 |---|---|---|
 | **Frontend** | Vercel or Cloudflare Pages | Root Directory: `client`<br>Build Command: `npm run build`<br>Output Directory: `dist` |
-| **Backend** | Render, Railway, or Fly.io | Root Directory: `server`<br>Start Command: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`<br>Runtime: Python 3.13 |
+| **Backend** | Render, Railway, or Fly.io | Root Directory: `server`<br>Build Command: `pip install -r requirements.txt && alembic upgrade head`<br>Start Command: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`<br>Runtime: Python 3.13 |
 | **Database** | Neon.tech or Supabase | PostgreSQL 16 serverless instance. Copy Connection String to `DATABASE_URL`. |
 | **Storage** | AWS S3 or Cloudflare R2 | S3-compatible Object Storage for uploaded media. |
 

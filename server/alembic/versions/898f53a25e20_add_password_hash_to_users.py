@@ -20,7 +20,19 @@ depends_on: Union[str, Sequence[str], None] = None
 
 def upgrade() -> None:
     """Upgrade schema."""
-    op.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS password_hash VARCHAR(255);")
+    bind = op.get_bind()
+    columns_users = []
+    try:
+        insp = sa.inspect(bind)
+        columns_users = [c['name'] for c in insp.get_columns('users')]
+    except Exception:
+        pass
+
+    if 'password_hash' not in columns_users:
+        if bind.dialect.name == 'postgresql':
+            op.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS password_hash VARCHAR(255);")
+        else:
+            op.add_column('users', sa.Column('password_hash', sa.String(length=255), nullable=True))
 
 
 def downgrade() -> None:
