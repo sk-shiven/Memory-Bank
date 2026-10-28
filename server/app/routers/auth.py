@@ -67,6 +67,7 @@ def get_current_user(
 
 
 @router.post("/demo", response_model=TokenResponse)
+@router.post("/demo/", response_model=TokenResponse)
 def demo_login(req: DemoAuthRequest, db: Session = Depends(get_db)):
     """One-click developer / demo login for quick testing."""
     user = db.query(User).filter(User.email == req.email).first()
@@ -106,6 +107,7 @@ def demo_login(req: DemoAuthRequest, db: Session = Depends(get_db)):
 
 
 @router.post("/login", response_model=TokenResponse)
+@router.post("/login/", response_model=TokenResponse)
 def login_with_password(req: UserLoginRequest, db: Session = Depends(get_db)):
     """Authenticates a user with email/username and password, returning a JWT token."""
     login_id = req.username_or_email.strip().lower()
@@ -143,6 +145,7 @@ def login_with_password(req: UserLoginRequest, db: Session = Depends(get_db)):
 
 
 @router.post("/register", response_model=TokenResponse)
+@router.post("/register/", response_model=TokenResponse)
 def register_with_password(req: UserRegisterRequest, db: Session = Depends(get_db)):
     """Registers a new user with email and password, returning a JWT token."""
     email = req.email.strip().lower()
@@ -191,6 +194,7 @@ def register_with_password(req: UserRegisterRequest, db: Session = Depends(get_d
 
 
 @router.post("/google", response_model=TokenResponse)
+@router.post("/google/", response_model=TokenResponse)
 def google_auth(req: GoogleAuthRequest, db: Session = Depends(get_db)):
     """Google OAuth login endpoint."""
     raw_token = req.credential or req.token
