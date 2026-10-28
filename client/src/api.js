@@ -1,5 +1,29 @@
 const API_BASE = import.meta.env.VITE_API_BASE || '/api';
 
+// In-memory responses for demo user (ephemeral: strictly evaporates on browser refresh)
+const demoAnswers = new Map(); // question_id (string) -> answer object
+let isDemoAccount = false;
+
+export function isDemoUser() {
+  if (isDemoAccount) return true;
+  const token = localStorage.getItem('token');
+  if (!token) return false;
+  try {
+    const parts = token.split('.');
+    if (parts.length >= 2) {
+      const b64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+      const payload = JSON.parse(atob(b64));
+      if (payload.email === 'demo@example.com') {
+        isDemoAccount = true;
+        return true;
+      }
+    }
+  } catch {
+    // Ignore decoding errors
+  }
+  return false;
+}
+
 export function getAuthHeaders() {
   const token = localStorage.getItem('token');
   const headers = {};
@@ -15,6 +39,16 @@ export function isAuthenticated() {
 
 export function logout() {
   localStorage.removeItem('token');
+  demoAnswers.clear();
+  isDemoAccount = false;
+  // Clear any local reflection drafts on logout
+  try {
+    Object.keys(localStorage).forEach((key) => {
+      if (key.startsWith('draft_')) {
+        localStorage.removeItem(key);
+      }
+    });
+  } catch {}
 }
 
 // -------------------------------------------------------------
@@ -55,7 +89,9 @@ export async function registerWithPassword(email, password, name = 'Memory Explo
   return data;
 }
 
-export async function loginDemoUser(email = 'shiven@example.com', name = 'Shiven Kathuria') {
+export async function loginDemoUser(email = 'demo@example.com', name = 'Demo User') {
+  demoAnswers.clear();
+  isDemoAccount = true;
   const res = await fetch(`${API_BASE}/auth/demo`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -96,7 +132,14 @@ export async function fetchCurrentUser() {
     }
     throw new Error('Failed to load user profile');
   }
-  return res.json();
+  const data = await res.json();
+  if (data.email === 'demo@example.com') {
+    isDemoAccount = true;
+    data.name = data.name || 'Demo User';
+    // For demo users, streak reflects active in-memory reflections
+    data.streak_count = demoAnswers.size;
+  }
+  return data;
 }
 
 // -------------------------------------------------------------
@@ -108,7 +151,12 @@ export async function fetchTodayQuestion() {
     headers: getAuthHeaders(),
   });
   if (!res.ok) throw new Error("Failed to load today's question");
-  return res.json();
+  const data = await res.json();
+  if (isDemoUser() && data?.id) {
+    const memAns = demoAnswers.get(String(data.id));
+    data.answer = memAns || null;
+  }
+  return data;
 }
 
 export async function fetchQuestionById(questionId) {
@@ -116,7 +164,12 @@ export async function fetchQuestionById(questionId) {
     headers: getAuthHeaders(),
   });
   if (!res.ok) throw new Error('Failed to load question');
-  return res.json();
+  const data = await res.json();
+  if (isDemoUser() && data?.id) {
+    const memAns = demoAnswers.get(String(data.id));
+    data.answer = memAns || null;
+  }
+  return data;
 }
 
 // -------------------------------------------------------------
@@ -124,6 +177,22 @@ export async function fetchQuestionById(questionId) {
 // -------------------------------------------------------------
 
 export async function submitAnswer({ question_id, text, photo_url, audio_url }) {
+  if (isDemoUser()) {
+    const qKey = String(question_id);
+    const existing = demoAnswers.get(qKey);
+    const answerObj = {
+      id: existing ? existing.id : Date.now(),
+      question_id: Number(question_id),
+      text: text || '',
+      photo_url: photo_url || null,
+      audio_url: audio_url || null,
+      created_at: existing ? existing.created_at : new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
+    demoAnswers.set(qKey, answerObj);
+    return answerObj;
+  }
+
   const res = await fetch(`${API_BASE}/answers`, {
     method: 'POST',
     headers: {
@@ -140,6 +209,13 @@ export async function submitAnswer({ question_id, text, photo_url, audio_url }) 
 }
 
 export async function fetchAnswerById(answerId) {
+  if (isDemoUser()) {
+    for (const ans of demoAnswers.values()) {
+      if (String(ans.id) === String(answerId)) {
+        return ans;
+      }
+    }
+  }
   const res = await fetch(`${API_BASE}/answers/${answerId}`, {
     headers: getAuthHeaders(),
   });
@@ -148,6 +224,22 @@ export async function fetchAnswerById(answerId) {
 }
 
 export async function updateAnswer(answerId, { text, photo_url, audio_url }) {
+  if (isDemoUser()) {
+    for (const [qKey, ans] of demoAnswers.entries()) {
+      if (String(ans.id) === String(answerId)) {
+        const updated = {
+          ...ans,
+          text: text !== undefined ? text : ans.text,
+          photo_url: photo_url !== undefined ? photo_url : ans.photo_url,
+          audio_url: audio_url !== undefined ? audio_url : ans.audio_url,
+          updated_at: new Date().toISOString(),
+        };
+        demoAnswers.set(qKey, updated);
+        return updated;
+      }
+    }
+  }
+
   const res = await fetch(`${API_BASE}/answers/${answerId}`, {
     method: 'PUT',
     headers: {
@@ -164,6 +256,15 @@ export async function updateAnswer(answerId, { text, photo_url, audio_url }) {
 }
 
 export async function deleteAnswer(answerId) {
+  if (isDemoUser()) {
+    for (const [qKey, ans] of demoAnswers.entries()) {
+      if (String(ans.id) === String(answerId)) {
+        demoAnswers.delete(qKey);
+        return { status: 'deleted', id: answerId };
+      }
+    }
+  }
+
   const res = await fetch(`${API_BASE}/answers/${answerId}`, {
     method: 'DELETE',
     headers: getAuthHeaders(),
@@ -218,7 +319,52 @@ export async function fetchTimeline({ page = 1, limit = 20, format = null, theme
     headers: getAuthHeaders(),
   });
   if (!res.ok) throw new Error('Failed to load timeline');
-  return res.json();
+  const data = await res.json();
+
+  if (isDemoUser()) {
+    // For demo user, database answers are excluded.
+    // Overlay in-memory responses onto the timeline questions.
+    let list = (data.memories || []).map((item) => {
+      const qKey = String(item.question_id);
+      const memAns = demoAnswers.get(qKey);
+      if (memAns) {
+        return {
+          ...item,
+          answered: true,
+          answer: memAns,
+        };
+      }
+      return {
+        ...item,
+        answered: false,
+        answer: null,
+      };
+    });
+
+    if (format && format !== 'all') {
+      list = list.filter((item) => {
+        if (!item.answered || !item.answer) return false;
+        if (format === 'photo') return Boolean(item.answer.photo_url);
+        if (format === 'audio') return Boolean(item.answer.audio_url);
+        if (format === 'text') return Boolean(item.answer.text);
+        return true;
+      });
+    }
+
+    if (search && search.trim()) {
+      const query = search.trim().toLowerCase();
+      list = list.filter((item) => {
+        const qText = (item.question_text || '').toLowerCase();
+        const aText = (item.answer?.text || '').toLowerCase();
+        return qText.includes(query) || aText.includes(query);
+      });
+    }
+
+    data.memories = list;
+    data.total_memories = demoAnswers.size;
+  }
+
+  return data;
 }
 
 // -------------------------------------------------------------
@@ -272,5 +418,39 @@ export async function exportUserData() {
     headers: getAuthHeaders(),
   });
   if (!res.ok) throw new Error('Failed to export user archive');
-  return res.json();
+  const data = await res.json();
+
+  if (isDemoUser()) {
+    if (data.user) {
+      data.user.name = data.user.name || 'Demo User';
+      data.user.email = 'demo@example.com';
+    }
+    let count = 0;
+    if (data.memories && Array.isArray(data.memories)) {
+      data.memories = data.memories.map((m) => {
+        const qKey = String(m.question_id || m.id);
+        const memAns = demoAnswers.get(qKey);
+        if (memAns) {
+          count++;
+          return {
+            ...m,
+            answer: {
+              id: memAns.id,
+              text: memAns.text,
+              photo_url: memAns.photo_url,
+              audio_url: memAns.audio_url,
+              created_at: memAns.created_at,
+            },
+          };
+        }
+        return { ...m, answer: null };
+      });
+    }
+    if (data.stats) {
+      data.stats.total_memories_saved = count;
+      data.stats.current_streak = count;
+    }
+  }
+
+  return data;
 }

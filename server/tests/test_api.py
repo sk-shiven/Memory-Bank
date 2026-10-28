@@ -16,7 +16,7 @@ client = TestClient(app)
 
 
 def get_token():
-    res = client.post("/api/auth/demo", json={"email": "shiven@example.com", "name": "Shiven Kathuria"})
+    res = client.post("/api/auth/demo", json={"email": "demo@example.com", "name": "Demo User"})
     assert res.status_code == 200
     token = res.json()["access_token"]
     return {"Authorization": f"Bearer {token}"}

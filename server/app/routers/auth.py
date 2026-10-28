@@ -87,6 +87,9 @@ def demo_login(req: DemoAuthRequest, db: Session = Depends(get_db)):
         db.refresh(user)
     else:
         updated = False
+        if req.name and user.name != req.name:
+            user.name = req.name
+            updated = True
         if req.timezone and validate_timezone(req.timezone) and user.timezone != req.timezone:
             user.timezone = req.timezone
             updated = True

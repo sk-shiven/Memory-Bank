@@ -221,10 +221,10 @@ def run_tests():
     # TEST 8: User Interests & Single Shared Daily Question with Caching
     # -------------------------------------------------------------------------
     print("\n[TEST 8] User Interests (Max 5) & Shared Daily Question Per Interest Group")
-    shiven = db.query(User).filter(User.email == "shiven@example.com").first()
+    shiven = db.query(User).filter((User.email == "demo@example.com") | (User.email == "shiven@example.com")).first()
     assert shiven is not None
-    print(f"  Shiven Interests : {shiven.interests}")
-    print(f"  Maya Interests   : {user.interests}")
+    print(f"  Demo/Shiven Interests : {shiven.interests}")
+    print(f"  Maya Interests        : {user.interests}")
 
     # Both users have "mindfulness" in their interests
     shiven_active = _get_active_interest_group(shiven, day_number=1)

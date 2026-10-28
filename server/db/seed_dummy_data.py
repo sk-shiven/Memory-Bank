@@ -23,16 +23,16 @@ def seed():
     users_data = [
         {
             "google_id": "google-oauth-1092837465",
-            "email": "shiven@example.com",
-            "name": "Shiven Kathuria",
+            "email": "demo@example.com",
+            "name": "Demo User",
             "avatar_url": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150",
-            "timezone": "Asia/Kolkata",
+            "timezone": "UTC",
             "notification_time_preference": "20:00",
             "preferred_journaling_time": time(20, 0),
             "interests": ["mindfulness", "gratitude", "creativity"],
-            "push_token": "fcm_token_sample_shiven_delhi",
-            "streak_count": 4,
-            "max_streak": 4,
+            "push_token": "fcm_token_sample_demo",
+            "streak_count": 0,
+            "max_streak": 0,
         },
         {
             "google_id": "google-oauth-2083948172",

@@ -35,6 +35,17 @@ def submit_answer(
             detail="At least one memory format (text, photo, or audio) must be provided."
         )
 
+    # Demo user reflections are ephemeral and must never be saved to the database
+    if current_user.email == "demo@example.com":
+        return AnswerResponse(
+            id=int(datetime.now(timezone.utc).timestamp()),
+            question_id=data.question_id,
+            text=data.text,
+            photo_url=data.photo_url,
+            audio_url=data.audio_url,
+            created_at=datetime.now(timezone.utc)
+        )
+
     question = (
         db.query(Question)
         .filter(Question.id == data.question_id, Question.user_id == current_user.id)
@@ -105,6 +116,16 @@ def update_answer(
     db: Session = Depends(get_db)
 ):
     """Updates an existing memory answer belonging to the authenticated user."""
+    if current_user.email == "demo@example.com":
+        return AnswerResponse(
+            id=id,
+            question_id=0,
+            text=data.text,
+            photo_url=data.photo_url,
+            audio_url=data.audio_url,
+            created_at=datetime.now(timezone.utc)
+        )
+
     answer = db.query(Answer).filter(Answer.id == id, Answer.user_id == current_user.id).first()
     if not answer:
         raise HTTPException(
@@ -131,6 +152,9 @@ def delete_answer(
     db: Session = Depends(get_db)
 ):
     """Deletes an answer belonging to the authenticated user."""
+    if current_user.email == "demo@example.com":
+        return {"status": "deleted", "id": id}
+
     answer = db.query(Answer).filter(Answer.id == id, Answer.user_id == current_user.id).first()
     if not answer:
         raise HTTPException(

@@ -13,7 +13,7 @@ import {
   Edit3,
   Clock
 } from 'lucide-react';
-import { submitAnswer, uploadPhoto, uploadVoice } from '../api';
+import { submitAnswer, uploadPhoto, uploadVoice, isDemoUser } from '../api';
 
 export default function DailyQuestion({ question, onAnswered }) {
   const existingAnswer = question?.answer;
@@ -56,7 +56,7 @@ export default function DailyQuestion({ question, onAnswered }) {
       setPhotoUrl(existingAnswer.photo_url || '');
       setAudioUrl(existingAnswer.audio_url || '');
     } else if (question?.id) {
-      const draft = localStorage.getItem(`draft_${question.id}`);
+      const draft = isDemoUser() ? null : localStorage.getItem(`draft_${question.id}`);
       if (draft) {
         setText(draft);
         setDraftSavedTime('Restored from draft');
@@ -71,7 +71,7 @@ export default function DailyQuestion({ question, onAnswered }) {
 
   // Draft autosave debounce
   useEffect(() => {
-    if (!isAnswered && !existingAnswer && question?.id && text) {
+    if (!isAnswered && !existingAnswer && question?.id && text && !isDemoUser()) {
       const timer = setTimeout(() => {
         localStorage.setItem(`draft_${question.id}`, text);
         const now = new Date();

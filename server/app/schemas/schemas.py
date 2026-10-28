@@ -47,8 +47,8 @@ class GoogleAuthRequest(BaseModel):
 
 
 class DemoAuthRequest(BaseModel):
-    email: EmailStr = "shiven@example.com"
-    name: str = "Shiven Kathuria"
+    email: EmailStr = "demo@example.com"
+    name: str = "Demo User"
     timezone: Optional[str] = "UTC"
     interests: Optional[List[str]] = None
 
