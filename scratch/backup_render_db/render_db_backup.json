@@ -1,0 +1,199 @@
+{
+  "users": [
+    {
+      "id": 3,
+      "google_id": "100402946330403994619",
+      "email": "shivenkathuria@gmail.com",
+      "name": "Shiven Kathuria",
+      "avatar_url": "https://lh3.googleusercontent.com/a/ACg8ocInQYMR103lu4rm5qfLeQANxl1v54g_ZjHdMH_29HAJj1C8y6BMJA=s96-c",
+      "timezone": "UTC",
+      "notification_time_preference": "20:00",
+      "push_token": null,
+      "streak_count": 1,
+      "max_streak": 1,
+      "last_answered_at": "2026-10-27T18:14:25.395427+00:00",
+      "created_at": "2026-10-27T18:13:35.860946+00:00",
+      "preferred_journaling_time": "20:00:00",
+      "interests": [
+        "mindfulness",
+        "gratitude"
+      ],
+      "password_hash": "$2b$12$uRa2rZALrlEquwtAgM7E1ObSEmBrtI/0.CATvokglpjgtp7Jk35eC"
+    },
+    {
+      "id": 2,
+      "google_id": null,
+      "email": "shiven.kath.work@gmail.com",
+      "name": "Shiven Kathuria",
+      "avatar_url": null,
+      "timezone": "Asia/Kolkata",
+      "notification_time_preference": "10:30",
+      "push_token": null,
+      "streak_count": 2,
+      "max_streak": 2,
+      "last_answered_at": "2026-10-28T04:19:21.185250+00:00",
+      "created_at": "2026-10-27T17:50:31.574032+00:00",
+      "preferred_journaling_time": "10:30:00",
+      "interests": [
+        "relationships"
+      ],
+      "password_hash": "$2b$12$FimKHLUQv3pH30sZgdt9BuASVLLu16wB7KJGOrL/ULOk35sxhK66q"
+    },
+    {
+      "id": 4,
+      "google_id": "117623363308571783440",
+      "email": "shiven.25bcs10290@sst.scaler.com",
+      "name": "Shiven Kathuria",
+      "avatar_url": "https://lh3.googleusercontent.com/a/ACg8ocInqWgivzYK5_41i3ajdbF5dR9G_l4bhXDSgYdMqWtN2gvRXg=s96-c",
+      "timezone": "UTC",
+      "notification_time_preference": "20:00",
+      "push_token": null,
+      "streak_count": 0,
+      "max_streak": 0,
+      "last_answered_at": null,
+      "created_at": "2026-10-28T04:27:26.657366+00:00",
+      "preferred_journaling_time": "20:00:00",
+      "interests": [
+        "career",
+        "philosophy",
+        "growth"
+      ],
+      "password_hash": null
+    },
+    {
+      "id": 1,
+      "google_id": null,
+      "email": "demo@example.com",
+      "name": "Demo User",
+      "avatar_url": null,
+      "timezone": "UTC",
+      "notification_time_preference": "20:00",
+      "push_token": null,
+      "streak_count": 1,
+      "max_streak": 1,
+      "last_answered_at": "2026-10-28T04:50:03.231896+00:00",
+      "created_at": "2026-10-27T17:49:36.366627+00:00",
+      "preferred_journaling_time": "20:00:00",
+      "interests": [
+        "mindfulness",
+        "gratitude"
+      ],
+      "password_hash": null
+    },
+    {
+      "id": 5,
+      "google_id": null,
+      "email": "shiven@example.com",
+      "name": "Shiven Kathuria",
+      "avatar_url": null,
+      "timezone": "UTC",
+      "notification_time_preference": "20:00",
+      "push_token": null,
+      "streak_count": 0,
+      "max_streak": 0,
+      "last_answered_at": null,
+      "created_at": "2026-10-28T04:55:52.480257+00:00",
+      "preferred_journaling_time": "20:00:00",
+      "interests": [
+        "mindfulness",
+        "gratitude"
+      ],
+      "password_hash": null
+    }
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "user_id": 1,
+      "day_number": 1,
+      "question_text": "What is one moment from today when you were fully present, and what made you notice you were there?",
+      "theme_tags": "mindfulness,presence,awareness",
+      "generated_at": "2026-10-27T17:49:38.471198+00:00",
+      "is_served": true
+    },
+    {
+      "id": 2,
+      "user_id": 2,
+      "day_number": 1,
+      "question_text": "What is one moment from today when you were fully present, and what made you notice you were there?",
+      "theme_tags": "mindfulness,presence,awareness",
+      "generated_at": "2026-10-27T17:50:31.836880+00:00",
+      "is_served": true
+    },
+    {
+      "id": 3,
+      "user_id": 3,
+      "day_number": 1,
+      "question_text": "What is one moment from today when you were fully present, and what made you notice you were there?",
+      "theme_tags": "mindfulness,presence,awareness",
+      "generated_at": "2026-10-27T18:13:36.330944+00:00",
+      "is_served": true
+    },
+    {
+      "id": 4,
+      "user_id": 3,
+      "day_number": 2,
+      "question_text": "Who showed up for you today in a way that surprised you or made you feel seen?",
+      "theme_tags": "gratitude,connection,kindness",
+      "generated_at": "2026-10-28T04:15:35.141910+00:00",
+      "is_served": true
+    },
+    {
+      "id": 5,
+      "user_id": 2,
+      "day_number": 2,
+      "question_text": "Who showed up for you today in a way that surprised you or made you feel seen?",
+      "theme_tags": "gratitude,connection,kindness",
+      "generated_at": "2026-10-28T04:16:52.622742+00:00",
+      "is_served": true
+    },
+    {
+      "id": 6,
+      "user_id": 4,
+      "day_number": 1,
+      "question_text": "What moment today, no matter how brief, pulled your full attention away from everything else?",
+      "theme_tags": "mindfulness,presence,attention",
+      "generated_at": "2026-10-28T04:27:30.983077+00:00",
+      "is_served": true
+    },
+    {
+      "id": 7,
+      "user_id": 5,
+      "day_number": 1,
+      "question_text": "What moment today, no matter how brief, pulled your full attention away from everything else?",
+      "theme_tags": "mindfulness,presence,attention",
+      "generated_at": "2026-10-28T04:55:52.769331+00:00",
+      "is_served": true
+    }
+  ],
+  "answers": [
+    {
+      "id": 2,
+      "question_id": 2,
+      "user_id": 2,
+      "text": "Demo Demo",
+      "photo_url": "https://memory-bank-media-bucket.s3.ap-southeast-2.amazonaws.com/f9c8d8f6-db18-41df-9bfb-c6019b9a2025.jpeg",
+      "audio_url": "https://memory-bank-media-bucket.s3.ap-southeast-2.amazonaws.com/0c2144a2-a7ae-4572-b593-ea813cfcde98.webm",
+      "created_at": "2026-10-27T18:21:14.322671+00:00"
+    },
+    {
+      "id": 3,
+      "question_id": 5,
+      "user_id": 2,
+      "text": "dkcndw",
+      "photo_url": null,
+      "audio_url": "https://memory-bank-media-bucket.s3.ap-southeast-2.amazonaws.com/c48b73ea-47d4-44ff-bf3c-207a6700031f.webm",
+      "created_at": "2026-10-28T04:19:03.036412+00:00"
+    },
+    {
+      "id": 4,
+      "question_id": 1,
+      "user_id": 1,
+      "text": "While I was pouring my sauce over Chinmay",
+      "photo_url": null,
+      "audio_url": null,
+      "created_at": "2026-10-28T04:50:03.236565+00:00"
+    }
+  ],
+  "notification_logs": []
+}

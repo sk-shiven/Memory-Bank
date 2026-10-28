@@ -33,6 +33,33 @@ export function getAuthHeaders() {
   return headers;
 }
 
+export function handleApi404(url, errorDetail = 'Endpoint or resource not found') {
+  const err = new Error(`[404 Not Found] API Error at ${url || 'resource'}: ${errorDetail}`);
+  console.error(err);
+  if (typeof window !== 'undefined') {
+    try {
+      window.dispatchEvent(new CustomEvent('app:404', { detail: { url, message: errorDetail } }));
+      if (window.location.pathname !== '/404') {
+        window.history.pushState({ is404: true }, '', '/404');
+      }
+    } catch {
+      window.location.href = '/404';
+    }
+  }
+  return err;
+}
+
+export async function apiFetch(url, options = {}) {
+  const res = await fetch(url, options);
+  if (res.status === 404) {
+    const errData = await res.clone().json().catch(() => ({}));
+    const message = errData.detail || 'The requested resource was not found.';
+    const err = handleApi404(url, message);
+    throw err;
+  }
+  return res;
+}
+
 export function isAuthenticated() {
   return Boolean(localStorage.getItem('token'));
 }
@@ -56,7 +83,7 @@ export function logout() {
 // -------------------------------------------------------------
 
 export async function loginWithPassword(username_or_email, password) {
-  const res = await fetch(`${API_BASE}/auth/login`, {
+  const res = await apiFetch(`${API_BASE}/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username_or_email, password }),
@@ -73,7 +100,7 @@ export async function loginWithPassword(username_or_email, password) {
 }
 
 export async function registerWithPassword(email, password, name = 'Memory Explorer') {
-  const res = await fetch(`${API_BASE}/auth/register`, {
+  const res = await apiFetch(`${API_BASE}/auth/register`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, password, name }),
@@ -92,7 +119,7 @@ export async function registerWithPassword(email, password, name = 'Memory Explo
 export async function loginDemoUser(email = 'demo@example.com', name = 'Demo User') {
   demoAnswers.clear();
   isDemoAccount = true;
-  const res = await fetch(`${API_BASE}/auth/demo`, {
+  const res = await apiFetch(`${API_BASE}/auth/demo`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, name }),
@@ -106,7 +133,7 @@ export async function loginDemoUser(email = 'demo@example.com', name = 'Demo Use
 }
 
 export async function loginGoogleUser(idToken) {
-  const res = await fetch(`${API_BASE}/auth/google`, {
+  const res = await apiFetch(`${API_BASE}/auth/google`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ credential: idToken, token: idToken }),
@@ -123,7 +150,7 @@ export async function loginGoogleUser(idToken) {
 }
 
 export async function fetchCurrentUser() {
-  const res = await fetch(`${API_BASE}/auth/me`, {
+  const res = await apiFetch(`${API_BASE}/auth/me`, {
     headers: getAuthHeaders(),
   });
   if (!res.ok) {
@@ -147,7 +174,7 @@ export async function fetchCurrentUser() {
 // -------------------------------------------------------------
 
 export async function fetchTodayQuestion() {
-  const res = await fetch(`${API_BASE}/questions/today`, {
+  const res = await apiFetch(`${API_BASE}/questions/today`, {
     headers: getAuthHeaders(),
   });
   if (!res.ok) throw new Error("Failed to load today's question");
@@ -160,7 +187,7 @@ export async function fetchTodayQuestion() {
 }
 
 export async function fetchQuestionById(questionId) {
-  const res = await fetch(`${API_BASE}/questions/${questionId}`, {
+  const res = await apiFetch(`${API_BASE}/questions/${questionId}`, {
     headers: getAuthHeaders(),
   });
   if (!res.ok) throw new Error('Failed to load question');
@@ -193,7 +220,7 @@ export async function submitAnswer({ question_id, text, photo_url, audio_url }) 
     return answerObj;
   }
 
-  const res = await fetch(`${API_BASE}/answers`, {
+  const res = await apiFetch(`${API_BASE}/answers`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -216,7 +243,7 @@ export async function fetchAnswerById(answerId) {
       }
     }
   }
-  const res = await fetch(`${API_BASE}/answers/${answerId}`, {
+  const res = await apiFetch(`${API_BASE}/answers/${answerId}`, {
     headers: getAuthHeaders(),
   });
   if (!res.ok) throw new Error('Failed to load memory');
@@ -240,7 +267,7 @@ export async function updateAnswer(answerId, { text, photo_url, audio_url }) {
     }
   }
 
-  const res = await fetch(`${API_BASE}/answers/${answerId}`, {
+  const res = await apiFetch(`${API_BASE}/answers/${answerId}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -265,7 +292,7 @@ export async function deleteAnswer(answerId) {
     }
   }
 
-  const res = await fetch(`${API_BASE}/answers/${answerId}`, {
+  const res = await apiFetch(`${API_BASE}/answers/${answerId}`, {
     method: 'DELETE',
     headers: getAuthHeaders(),
   });
@@ -276,7 +303,7 @@ export async function deleteAnswer(answerId) {
 export async function uploadPhoto(file) {
   const formData = new FormData();
   formData.append('file', file);
-  const res = await fetch(`${API_BASE}/answers/upload-photo`, {
+  const res = await apiFetch(`${API_BASE}/answers/upload-photo`, {
     method: 'POST',
     headers: getAuthHeaders(),
     body: formData,
@@ -291,7 +318,7 @@ export async function uploadPhoto(file) {
 export async function uploadVoice(blob, filename = 'voice_memory.webm') {
   const formData = new FormData();
   formData.append('file', blob, filename);
-  const res = await fetch(`${API_BASE}/answers/upload-voice`, {
+  const res = await apiFetch(`${API_BASE}/answers/upload-voice`, {
     method: 'POST',
     headers: getAuthHeaders(),
     body: formData,
@@ -315,7 +342,7 @@ export async function fetchTimeline({ page = 1, limit = 20, format = null, theme
   if (theme) params.append('theme', theme);
   if (search && search.trim()) params.append('search', search.trim());
 
-  const res = await fetch(`${API_BASE}/timeline?${params.toString()}`, {
+  const res = await apiFetch(`${API_BASE}/timeline?${params.toString()}`, {
     headers: getAuthHeaders(),
   });
   if (!res.ok) throw new Error('Failed to load timeline');
@@ -385,7 +412,7 @@ export async function updatePreferences({
   if (interests !== null) payload.interests = interests;
   if (push_token !== null) payload.push_token = push_token;
 
-  const res = await fetch(`${API_BASE}/users/preferences`, {
+  const res = await apiFetch(`${API_BASE}/users/preferences`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -401,7 +428,7 @@ export async function updatePreferences({
 }
 
 export async function registerPushToken(push_token) {
-  const res = await fetch(`${API_BASE}/users/push-token`, {
+  const res = await apiFetch(`${API_BASE}/users/push-token`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -414,7 +441,7 @@ export async function registerPushToken(push_token) {
 }
 
 export async function exportUserData() {
-  const res = await fetch(`${API_BASE}/users/export`, {
+  const res = await apiFetch(`${API_BASE}/users/export`, {
     headers: getAuthHeaders(),
   });
   if (!res.ok) throw new Error('Failed to export user archive');

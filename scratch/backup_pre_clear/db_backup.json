@@ -1,0 +1,596 @@
+{
+  "users": [
+    {
+      "id": 5,
+      "google_id": "google-oauth-4019283746",
+      "email": "elena.rostova@example.com",
+      "name": "Elena Rostova",
+      "avatar_url": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150",
+      "notification_time_preference": "19:00",
+      "push_token": null,
+      "created_at": "2026-10-27T15:39:25.156268+05:30",
+      "timezone": "Asia/Tokyo",
+      "streak_count": 0,
+      "max_streak": 1,
+      "last_answered_at": null,
+      "preferred_journaling_time": "19:00:00",
+      "interests": [
+        "health",
+        "mindfulness",
+        "career"
+      ],
+      "password_hash": null
+    },
+    {
+      "id": 4,
+      "google_id": "google-oauth-3091827364",
+      "email": "lucas.dubois@example.com",
+      "name": "Lucas Dubois",
+      "avatar_url": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150",
+      "notification_time_preference": "08:30",
+      "push_token": "fcm_token_sample_lucas_paris",
+      "created_at": "2026-10-27T15:39:25.155147+05:30",
+      "timezone": "Europe/Paris",
+      "streak_count": 4,
+      "max_streak": 5,
+      "last_answered_at": "2026-10-27T16:21:27.442785+05:30",
+      "preferred_journaling_time": "08:30:00",
+      "interests": [
+        "philosophy",
+        "adventure",
+        "creativity"
+      ],
+      "password_hash": null
+    },
+    {
+      "id": 6,
+      "google_id": null,
+      "email": "overflow@example.com",
+      "name": "Overflow",
+      "avatar_url": null,
+      "notification_time_preference": "20:00",
+      "push_token": null,
+      "created_at": "2026-10-27T16:37:41.083969+05:30",
+      "timezone": "UTC",
+      "streak_count": 0,
+      "max_streak": 0,
+      "last_answered_at": null,
+      "preferred_journaling_time": "20:00:00",
+      "interests": [
+        "mindfulness",
+        "growth",
+        "relationships",
+        "creativity",
+        "gratitude",
+        "career"
+      ],
+      "password_hash": null
+    },
+    {
+      "id": 8,
+      "google_id": null,
+      "email": "bounds_user@example.com",
+      "name": "Bounds User",
+      "avatar_url": null,
+      "notification_time_preference": "20:00",
+      "push_token": null,
+      "created_at": "2026-10-27T16:37:42.505149+05:30",
+      "timezone": "UTC",
+      "streak_count": 0,
+      "max_streak": 0,
+      "last_answered_at": null,
+      "preferred_journaling_time": "20:00:00",
+      "interests": [
+        "mindfulness",
+        "gratitude"
+      ],
+      "password_hash": null
+    },
+    {
+      "id": 10,
+      "google_id": null,
+      "email": "bob@example.com",
+      "name": "Bob",
+      "avatar_url": null,
+      "notification_time_preference": "20:00",
+      "push_token": null,
+      "created_at": "2026-10-27T16:37:42.522838+05:30",
+      "timezone": "UTC",
+      "streak_count": 0,
+      "max_streak": 0,
+      "last_answered_at": null,
+      "preferred_journaling_time": "20:00:00",
+      "interests": [
+        "mindfulness",
+        "gratitude"
+      ],
+      "password_hash": null
+    },
+    {
+      "id": 11,
+      "google_id": null,
+      "email": "media_user@example.com",
+      "name": "Media User",
+      "avatar_url": null,
+      "notification_time_preference": "20:00",
+      "push_token": null,
+      "created_at": "2026-10-27T16:37:42.540954+05:30",
+      "timezone": "UTC",
+      "streak_count": 0,
+      "max_streak": 0,
+      "last_answered_at": null,
+      "preferred_journaling_time": "20:00:00",
+      "interests": [
+        "mindfulness",
+        "gratitude"
+      ],
+      "password_hash": null
+    },
+    {
+      "id": 12,
+      "google_id": null,
+      "email": "timeline_test@example.com",
+      "name": "Timeline Tester",
+      "avatar_url": null,
+      "notification_time_preference": "20:00",
+      "push_token": null,
+      "created_at": "2026-10-27T16:45:04.864431+05:30",
+      "timezone": "UTC",
+      "streak_count": 0,
+      "max_streak": 0,
+      "last_answered_at": null,
+      "preferred_journaling_time": "20:00:00",
+      "interests": [
+        "mindfulness",
+        "gratitude"
+      ],
+      "password_hash": null
+    },
+    {
+      "id": 13,
+      "google_id": null,
+      "email": "export_user@example.com",
+      "name": "Export User",
+      "avatar_url": null,
+      "notification_time_preference": "20:00",
+      "push_token": null,
+      "created_at": "2026-10-27T16:45:04.883423+05:30",
+      "timezone": "UTC",
+      "streak_count": 0,
+      "max_streak": 0,
+      "last_answered_at": null,
+      "preferred_journaling_time": "20:00:00",
+      "interests": [
+        "mindfulness",
+        "gratitude"
+      ],
+      "password_hash": null
+    },
+    {
+      "id": 2,
+      "google_id": "google-oauth-1092837465",
+      "email": "demo@example.com",
+      "name": "Demo User",
+      "avatar_url": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150",
+      "notification_time_preference": "21:30",
+      "push_token": "fcm_token_sample_shiven_delhi",
+      "created_at": "2026-10-24T16:12:56.233332+05:30",
+      "timezone": "UTC",
+      "streak_count": 0,
+      "max_streak": 0,
+      "last_answered_at": null,
+      "preferred_journaling_time": "21:30:00",
+      "interests": [
+        "mindfulness",
+        "creativity",
+        "philosophy"
+      ],
+      "password_hash": null
+    },
+    {
+      "id": 3,
+      "google_id": "google-oauth-2083948172",
+      "email": "maya.lin@example.com",
+      "name": "Maya Lin",
+      "avatar_url": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150",
+      "notification_time_preference": "21:00",
+      "push_token": "fcm_token_sample_maya_nyc",
+      "created_at": "2026-10-27T15:39:25.153157+05:30",
+      "timezone": "America/New_York",
+      "streak_count": 7,
+      "max_streak": 14,
+      "last_answered_at": "2026-10-27T15:44:14.788228+05:30",
+      "preferred_journaling_time": "21:00:00",
+      "interests": [
+        "mindfulness",
+        "gratitude",
+        "growth",
+        "memories"
+      ],
+      "password_hash": null
+    },
+    {
+      "id": 14,
+      "google_id": null,
+      "email": "testuser@example.com",
+      "name": "Test User",
+      "avatar_url": null,
+      "notification_time_preference": "20:00",
+      "push_token": null,
+      "created_at": "2026-10-27T19:41:19.650593+05:30",
+      "timezone": "UTC",
+      "streak_count": 0,
+      "max_streak": 0,
+      "last_answered_at": null,
+      "preferred_journaling_time": "20:00:00",
+      "interests": [
+        "mindfulness",
+        "gratitude"
+      ],
+      "password_hash": "$2b$12$VtTSr3T0qO/asb3HTnlto.TbI/71utmb7d1NPng7LGRWauyDXnVJ6"
+    },
+    {
+      "id": 7,
+      "google_id": null,
+      "email": "cal_user@example.com",
+      "name": "Calendar User",
+      "avatar_url": null,
+      "notification_time_preference": "20:00",
+      "push_token": null,
+      "created_at": "2026-10-27T16:37:41.088527+05:30",
+      "timezone": "UTC",
+      "streak_count": 2,
+      "max_streak": 2,
+      "last_answered_at": "2026-10-28T10:37:28.939948+05:30",
+      "preferred_journaling_time": "20:00:00",
+      "interests": [
+        "mindfulness",
+        "gratitude"
+      ],
+      "password_hash": null
+    },
+    {
+      "id": 9,
+      "google_id": null,
+      "email": "alice@example.com",
+      "name": "Alice",
+      "avatar_url": null,
+      "notification_time_preference": "20:00",
+      "push_token": null,
+      "created_at": "2026-10-27T16:37:42.518653+05:30",
+      "timezone": "UTC",
+      "streak_count": 6,
+      "max_streak": 6,
+      "last_answered_at": "2026-10-28T10:37:28.980162+05:30",
+      "preferred_journaling_time": "20:00:00",
+      "interests": [
+        "mindfulness",
+        "gratitude"
+      ],
+      "password_hash": null
+    }
+  ],
+  "questions": [
+    {
+      "id": 5,
+      "user_id": 2,
+      "day_number": 1,
+      "question_text": "What is one small thing that brought you genuine joy or calm today?",
+      "theme_tags": "joy,mindfulness",
+      "generated_at": "2026-10-21T16:13:45.482162+05:30",
+      "is_served": true
+    },
+    {
+      "id": 6,
+      "user_id": 2,
+      "day_number": 2,
+      "question_text": "Who is someone you are deeply grateful for right now, and why?",
+      "theme_tags": "gratitude,relationships",
+      "generated_at": "2026-10-22T16:13:45.482162+05:30",
+      "is_served": true
+    },
+    {
+      "id": 7,
+      "user_id": 2,
+      "day_number": 3,
+      "question_text": "If you could capture one sound from today to remember forever, what would it be?",
+      "theme_tags": "senses,memory",
+      "generated_at": "2026-10-23T16:13:45.482162+05:30",
+      "is_served": true
+    },
+    {
+      "id": 8,
+      "user_id": 2,
+      "day_number": 4,
+      "question_text": "What is a decision you made recently that you felt proud of?",
+      "theme_tags": "growth,decisions",
+      "generated_at": "2026-10-24T16:13:45.482162+05:30",
+      "is_served": true
+    },
+    {
+      "id": 9,
+      "user_id": 3,
+      "day_number": 1,
+      "question_text": "What is a scent or smell that instantly transports you back to childhood?",
+      "theme_tags": "senses,nostalgia",
+      "generated_at": "2026-10-21T16:19:09.932180+05:30",
+      "is_served": true
+    },
+    {
+      "id": 10,
+      "user_id": 3,
+      "day_number": 2,
+      "question_text": "Who was the last person who made you laugh until your stomach hurt?",
+      "theme_tags": "friendship,laughter",
+      "generated_at": "2026-10-22T16:19:09.932180+05:30",
+      "is_served": true
+    },
+    {
+      "id": 11,
+      "user_id": 3,
+      "day_number": 3,
+      "question_text": "What is something you forgive your younger self for?",
+      "theme_tags": "healing,self-compassion",
+      "generated_at": "2026-10-23T16:19:09.932180+05:30",
+      "is_served": true
+    },
+    {
+      "id": 12,
+      "user_id": 3,
+      "day_number": 4,
+      "question_text": "What was the most beautiful view you saw with your own eyes this week?",
+      "theme_tags": "nature,wonder",
+      "generated_at": "2026-10-24T16:19:09.932180+05:30",
+      "is_served": true
+    },
+    {
+      "id": 13,
+      "user_id": 3,
+      "day_number": 5,
+      "question_text": "What is a belief you used to hold strongly that you have now changed your mind on?",
+      "theme_tags": "growth,philosophy",
+      "generated_at": "2026-10-25T16:19:09.932180+05:30",
+      "is_served": true
+    },
+    {
+      "id": 14,
+      "user_id": 3,
+      "day_number": 6,
+      "question_text": "If your day had a musical soundtrack today, what genre would it be?",
+      "theme_tags": "music,mood",
+      "generated_at": "2026-10-26T16:19:09.932180+05:30",
+      "is_served": true
+    },
+    {
+      "id": 15,
+      "user_id": 3,
+      "day_number": 7,
+      "question_text": "What is one gentle promise you want to make to yourself for tomorrow?",
+      "theme_tags": "intentions,calm",
+      "generated_at": "2026-10-27T16:19:09.932180+05:30",
+      "is_served": true
+    },
+    {
+      "id": 16,
+      "user_id": 4,
+      "day_number": 1,
+      "question_text": "What morning ritual grounds you before the world demands your attention?",
+      "theme_tags": "rituals,mindfulness",
+      "generated_at": "2026-10-25T16:19:09.932180+05:30",
+      "is_served": true
+    },
+    {
+      "id": 17,
+      "user_id": 4,
+      "day_number": 2,
+      "question_text": "What is an unexpected kindness a stranger offered you?",
+      "theme_tags": "kindness,community",
+      "generated_at": "2026-10-26T16:19:09.932180+05:30",
+      "is_served": true
+    },
+    {
+      "id": 18,
+      "user_id": 4,
+      "day_number": 3,
+      "question_text": "What project or dream is quietly whispering to you right now?",
+      "theme_tags": "dreams,creativity",
+      "generated_at": "2026-10-27T16:19:09.932180+05:30",
+      "is_served": true
+    },
+    {
+      "id": 23,
+      "user_id": 5,
+      "day_number": 1,
+      "question_text": "How does your body feel right now, in this quiet moment at the start of your journey?",
+      "theme_tags": "health,body awareness,presence,self-care",
+      "generated_at": "2026-10-27T16:37:21.864151+05:30",
+      "is_served": true
+    },
+    {
+      "id": 24,
+      "user_id": 7,
+      "day_number": 1,
+      "question_text": "What is one small sound, scent, or texture you noticed today that you would have missed if you had been rushing?",
+      "theme_tags": "mindfulness,presence,senses",
+      "generated_at": "2026-10-27T16:37:42.476564+05:30",
+      "is_served": true
+    },
+    {
+      "id": 25,
+      "user_id": 9,
+      "day_number": 1,
+      "question_text": "What is one small sound, scent, or texture you noticed today that you would have missed if you had been rushing?",
+      "theme_tags": "mindfulness,presence,senses",
+      "generated_at": "2026-10-27T16:37:42.527678+05:30",
+      "is_served": true
+    },
+    {
+      "id": 27,
+      "user_id": 2,
+      "day_number": 5,
+      "question_text": "What is a creative act, big or small, that you've been quietly drawn to lately, and what do you think it's giving you that you need?",
+      "theme_tags": "creativity,self-expression,curiosity",
+      "generated_at": "2026-10-28T10:31:48.609339+05:30",
+      "is_served": true
+    },
+    {
+      "id": 29,
+      "user_id": 7,
+      "day_number": 2,
+      "question_text": "Who is someone whose everyday kindness you've taken for granted, and what would you want them to know about how it has shaped you?",
+      "theme_tags": "gratitude,relationships,kindness",
+      "generated_at": "2026-10-28T10:37:28.928193+05:30",
+      "is_served": true
+    },
+    {
+      "id": 19,
+      "user_id": 3,
+      "day_number": 8,
+      "question_text": "Polished question for Day 8: What brought a genuine smile to your lips today?",
+      "theme_tags": "joy,serenity",
+      "generated_at": "2026-10-27T15:43:33.942835+05:30",
+      "is_served": true
+    }
+  ],
+  "answers": [
+    {
+      "id": 14,
+      "question_id": 19,
+      "user_id": 3,
+      "text": "Tested reflection via FastAPI TestClient.",
+      "photo_url": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800",
+      "audio_url": null,
+      "created_at": "2026-10-27T15:44:14.789783+05:30"
+    },
+    {
+      "id": 4,
+      "question_id": 9,
+      "user_id": 3,
+      "text": "The scent of cinnamon apple pie baking in my grandmother's kitchen on rainy October Sunday afternoons.",
+      "photo_url": "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800",
+      "audio_url": null,
+      "created_at": "2026-10-22T00:19:09.932180+05:30"
+    },
+    {
+      "id": 5,
+      "question_id": 10,
+      "user_id": 3,
+      "text": "Had coffee with Sarah and she told me the story of how she accidentally gave a PowerPoint presentation to the wrong Zoom room.",
+      "photo_url": null,
+      "audio_url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+      "created_at": "2026-10-23T00:19:09.932180+05:30"
+    },
+    {
+      "id": 6,
+      "question_id": 11,
+      "user_id": 3,
+      "text": "For staying in that unfulfilling job two years too long out of fear of failure. I did the best I could with what I knew then.",
+      "photo_url": null,
+      "audio_url": null,
+      "created_at": "2026-10-24T00:19:09.932180+05:30"
+    },
+    {
+      "id": 7,
+      "question_id": 12,
+      "user_id": 3,
+      "text": "Sunset over Central Park reservoir. The sky turned burnt orange and lavender reflecting off the glass towers.",
+      "photo_url": "https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=800",
+      "audio_url": null,
+      "created_at": "2026-10-25T00:19:09.932180+05:30"
+    },
+    {
+      "id": 8,
+      "question_id": 13,
+      "user_id": 3,
+      "text": "I used to believe multitasking was a superpower. Now I understand deep, mono-focused presence is the rarest luxury.",
+      "photo_url": null,
+      "audio_url": null,
+      "created_at": "2026-10-26T00:19:09.932180+05:30"
+    },
+    {
+      "id": 9,
+      "question_id": 14,
+      "user_id": 3,
+      "text": "A warm acoustic folk guitar playing softly in a sunlit wooden room.",
+      "photo_url": null,
+      "audio_url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+      "created_at": "2026-10-27T00:19:09.932180+05:30"
+    },
+    {
+      "id": 10,
+      "question_id": 16,
+      "user_id": 4,
+      "text": "Espresso on the balcony watching the Rue Montmartre wake up with delivery carts and freshly baked baguettes.",
+      "photo_url": "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=800",
+      "audio_url": null,
+      "created_at": "2026-10-25T21:19:09.932180+05:30"
+    },
+    {
+      "id": 11,
+      "question_id": 17,
+      "user_id": 4,
+      "text": "An elderly bookstore owner handed me an antique postcard of Paris from 1920 when I was browsing yesterday.",
+      "photo_url": null,
+      "audio_url": null,
+      "created_at": "2026-10-26T21:19:09.932180+05:30"
+    },
+    {
+      "id": 16,
+      "question_id": 18,
+      "user_id": 4,
+      "text": "Tested reflection via FastAPI TestClient.",
+      "photo_url": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800",
+      "audio_url": null,
+      "created_at": "2026-10-27T16:21:27.444318+05:30"
+    },
+    {
+      "id": 18,
+      "question_id": 24,
+      "user_id": 7,
+      "text": "Reflection for today.",
+      "photo_url": null,
+      "audio_url": null,
+      "created_at": "2026-10-27T16:37:42.488740+05:30"
+    },
+    {
+      "id": 28,
+      "question_id": 29,
+      "user_id": 7,
+      "text": "Reflection for today.",
+      "photo_url": null,
+      "audio_url": null,
+      "created_at": "2026-10-28T10:37:28.945306+05:30"
+    },
+    {
+      "id": 12,
+      "question_id": 15,
+      "user_id": 3,
+      "text": "Updated answer for Day 7: I promise to breathe deeply and choose grace.",
+      "photo_url": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800",
+      "audio_url": null,
+      "created_at": "2026-10-27T15:43:33.929375+05:30"
+    }
+  ],
+  "notification_logs": [
+    {
+      "id": 1,
+      "user_id": 3,
+      "question_id": 9,
+      "status": "sent",
+      "channel": "fcm",
+      "error_message": null,
+      "sent_at": "2026-10-26T15:39:25.115384+05:30",
+      "scheduled_time": null
+    },
+    {
+      "id": 2,
+      "user_id": 4,
+      "question_id": 16,
+      "status": "sent",
+      "channel": "fcm",
+      "error_message": null,
+      "sent_at": "2026-10-26T15:39:25.115384+05:30",
+      "scheduled_time": null
+    }
+  ]
+}
